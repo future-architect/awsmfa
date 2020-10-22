@@ -1,0 +1,7 @@
+[default]
+region = us-east-1
+output = json
+
+[mfa]
+region = us-east-1
+
