@@ -2,6 +2,8 @@ package awsmfa
 
 import (
 	"context"
+	"fmt"
+	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sts"
@@ -23,8 +25,14 @@ func Run(ctx context.Context, c *Config) error {
 	if err != nil {
 		return err
 	}
-	_ = config.Section(c.mfaProfileName)
-	_, err = config.WriteTo(c.outConfigStream)
+	_ = config.Section(fmt.Sprintf("profile %s", c.mfaProfileName))
+
+	outConfigFile, err := os.Create(c.outConfigPath)
+	if err != nil {
+		return err
+	}
+	defer outConfigFile.Close()
+	_, err = config.WriteTo(outConfigFile)
 	if err != nil {
 		return err
 	}
@@ -40,12 +48,13 @@ func Run(ctx context.Context, c *Config) error {
 	section.Key("aws_secret_access_key").SetValue(aws.StringValue(out.Credentials.SecretAccessKey))
 	section.Key("aws_session_token").SetValue(aws.StringValue(out.Credentials.SessionToken))
 
-	_, err = credential.WriteTo(c.outCredentialsStream)
+	outCredentialsFile, err := os.Create(c.outCredentialsPath)
 	if err != nil {
 		return err
 	}
-
-	if err := c.closeFunc(); err != nil {
+	defer outCredentialsFile.Close()
+	_, err = credential.WriteTo(outCredentialsFile)
+	if err != nil {
 		return err
 	}
 

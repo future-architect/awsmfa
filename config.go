@@ -3,8 +3,8 @@ package awsmfa
 import (
 	"errors"
 	"fmt"
-	"io"
 	"os"
+	"path/filepath"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -27,9 +27,8 @@ type Config struct {
 	mfaTokenCode    string
 
 	// output
-	outConfigStream      io.Writer
-	outCredentialsStream io.Writer
-	closeFunc            func() error
+	outConfigPath      string
+	outCredentialsPath string
 }
 
 func NewConfig(c *cli.Context) (*Config, error) {
@@ -55,35 +54,21 @@ func NewConfig(c *cli.Context) (*Config, error) {
 		},
 	})))
 
-	configFile, err := os.Create(c.String("config-path"))
+	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return nil, err
-	}
-	credentialsFile, err := os.Create(c.String("credentials-path"))
-	if err != nil {
-		return nil, err
-	}
-	f := func() error {
-		if err := configFile.Close(); err != nil {
-			return err
-		}
-		if err := credentialsFile.Close(); err != nil {
-			return err
-		}
-		return nil
 	}
 
 	return &Config{
-		profile:              c.String("profile"),
-		mfaProfileName:       c.String("mfa-profile-name"),
-		configPath:           c.String("config-path"),
-		credentialsPath:      c.String("credentials-path"),
-		durationSeconds:      c.Int64("duration-seconds"),
-		serialNumber:         serialNumber,
-		mfaTokenCode:         mfaTokenCode,
-		client:               client,
-		outConfigStream:      configFile,
-		outCredentialsStream: credentialsFile,
-		closeFunc:            f,
+		client:             client,
+		profile:            c.String("profile"),
+		mfaProfileName:     c.String("mfa-profile-name"),
+		configPath:         filepath.Join(homeDir, ".aws", "config"),
+		credentialsPath:    filepath.Join(homeDir, ".aws", "credentials"),
+		durationSeconds:    c.Int64("duration-seconds"),
+		serialNumber:       serialNumber,
+		mfaTokenCode:       mfaTokenCode,
+		outConfigPath:      filepath.Join(homeDir, ".aws", "config"),
+		outCredentialsPath: filepath.Join(homeDir, ".aws", "credentials"),
 	}, nil
 }

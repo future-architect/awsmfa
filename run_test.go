@@ -3,7 +3,6 @@ package awsmfa
 import (
 	"context"
 	"io/ioutil"
-	"os"
 	"path/filepath"
 	"testing"
 
@@ -35,7 +34,6 @@ func TestRun(t *testing.T) {
 					mfaProfileName:  "mfa",
 					configPath:      filepath.Join("testdata", ".aws", "config"),
 					credentialsPath: filepath.Join("testdata", ".aws", "credentials"),
-					closeFunc:       func() error { return nil },
 				},
 			},
 			wantErr:         false,
@@ -52,7 +50,6 @@ func TestRun(t *testing.T) {
 					mfaProfileName:  "mfa",
 					configPath:      filepath.Join("testdata", ".aws", "config_2"),
 					credentialsPath: filepath.Join("testdata", ".aws", "credentials_2"),
-					closeFunc:       func() error { return nil },
 				},
 			},
 			wantErr:         false,
@@ -71,18 +68,8 @@ func TestRun(t *testing.T) {
 			})))
 
 			tmpDir := t.TempDir()
-			configFile, err := os.Create(filepath.Join(tmpDir, "config"))
-			if err != nil {
-				t.Fatal(err)
-			}
-			defer configFile.Close()
-			credentialsFile, err := os.Create(filepath.Join(tmpDir, "credentials"))
-			if err != nil {
-				t.Fatal(err)
-			}
-			defer credentialsFile.Close()
-			tt.args.c.outConfigStream = configFile
-			tt.args.c.outCredentialsStream = credentialsFile
+			tt.args.c.outConfigPath = filepath.Join(tmpDir, "config")
+			tt.args.c.outCredentialsPath = filepath.Join(tmpDir, "credentials")
 
 			if err := Run(context.TODO(), tt.args.c); (err != nil) != tt.wantErr {
 				t.Errorf("Run() error = %v, wantErr %v", err, tt.wantErr)

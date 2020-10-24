@@ -4,18 +4,12 @@ import (
 	"context"
 	"log"
 	"os"
-	"path/filepath"
 
 	"github.com/d-tsuji/awsmfa"
 	"github.com/urfave/cli/v2"
 )
 
 func main() {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	app := &cli.App{
 		Name:  "awsmfa",
 		Usage: "Refresh AWS MFA",
@@ -37,16 +31,6 @@ func main() {
 				Usage: "MFA profile name",
 				Value: "mfa",
 			},
-			&cli.StringFlag{
-				Name:  "config-path",
-				Usage: "AWS config path",
-				Value: filepath.Join(homeDir, ".aws", "config"),
-			},
-			&cli.StringFlag{
-				Name:  "credentials-path",
-				Usage: "AWS credentials path",
-				Value: filepath.Join(homeDir, ".aws", "credentials"),
-			},
 			&cli.Int64Flag{
 				Name:  "duration-seconds",
 				Usage: "AWS IAM user session valid seconds",
@@ -55,6 +39,14 @@ func main() {
 			&cli.StringFlag{
 				Name:  "serial-number",
 				Usage: "AWS serial-number",
+			},
+			&cli.StringFlag{
+				Name:  "account-id",
+				Usage: "AWS account id",
+			},
+			&cli.StringFlag{
+				Name:  "role",
+				Usage: "AWS role",
 			},
 			&cli.StringFlag{
 				Name:  "token-code",
