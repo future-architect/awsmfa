@@ -3,6 +3,7 @@ package awsmfa
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -16,6 +17,9 @@ func Run(ctx context.Context, c *Config) error {
 		SerialNumber:    aws.String(c.serialNumber),
 		TokenCode:       aws.String(c.mfaTokenCode),
 	})
+	if !c.quiet {
+		log.Println(out)
+	}
 	if err != nil {
 		return err
 	}

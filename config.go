@@ -29,6 +29,9 @@ type Config struct {
 	// output
 	outConfigPath      string
 	outCredentialsPath string
+
+	// print log config
+	quiet bool
 }
 
 func NewConfig(c *cli.Context) (*Config, error) {
@@ -70,5 +73,6 @@ func NewConfig(c *cli.Context) (*Config, error) {
 		mfaTokenCode:       mfaTokenCode,
 		outConfigPath:      filepath.Join(homeDir, ".aws", "config"),
 		outCredentialsPath: filepath.Join(homeDir, ".aws", "credentials"),
+		quiet:              c.Bool("quiet"),
 	}, nil
 }
