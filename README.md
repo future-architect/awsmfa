@@ -7,7 +7,7 @@ awsmfa (AWS MFA Refresher)
 [actions]: https://github.com/d-tsuji/awsmfa/actions?workflow=test
 [license]: https://github.com/d-tsuji/awsmfa/blob/main/LICENSE
 
-`awsmfa` replaces the credentials for MFA in AWS.
+`awsmfa` replaces config(`~/.aws/config`) and credentials(`~/.aws/credentials`) for MFA in AWS.
 
 ## Usage
 
@@ -43,7 +43,7 @@ $ awsmfa [options] [token-code]
 ### Example
 
 ```
-$ awsmfa --profile my-profile 123456
+$ awsmfa --serial-number arn:aws:iam::123456789012:mfa/d-tsuji --profile my-profile 123456
 ```
 
 ## Installation
