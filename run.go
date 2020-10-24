@@ -27,13 +27,16 @@ func Run(ctx context.Context, c *Config) error {
 	}
 	_ = config.Section(fmt.Sprintf("profile %s", c.mfaProfileName))
 
-	outConfigFile, err := os.Create(c.outConfigPath)
+	outConfigFile, err := os.Create(fmt.Sprintf("%s.tmp", c.outConfigPath))
 	if err != nil {
 		return err
 	}
-	defer outConfigFile.Close()
 	_, err = config.WriteTo(outConfigFile)
 	if err != nil {
+		return err
+	}
+	outConfigFile.Close()
+	if err := os.Rename(fmt.Sprintf("%s.tmp", c.outConfigPath), c.outConfigPath); err != nil {
 		return err
 	}
 
@@ -48,13 +51,16 @@ func Run(ctx context.Context, c *Config) error {
 	section.Key("aws_secret_access_key").SetValue(aws.StringValue(out.Credentials.SecretAccessKey))
 	section.Key("aws_session_token").SetValue(aws.StringValue(out.Credentials.SessionToken))
 
-	outCredentialsFile, err := os.Create(c.outCredentialsPath)
+	outCredentialsFile, err := os.Create(fmt.Sprintf("%s.tmp", c.outCredentialsPath))
 	if err != nil {
 		return err
 	}
-	defer outCredentialsFile.Close()
 	_, err = credential.WriteTo(outCredentialsFile)
 	if err != nil {
+		return err
+	}
+	outCredentialsFile.Close()
+	if err := os.Rename(fmt.Sprintf("%s.tmp", c.outCredentialsPath), c.outCredentialsPath); err != nil {
 		return err
 	}
 

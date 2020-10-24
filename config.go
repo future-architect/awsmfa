@@ -44,7 +44,7 @@ func NewConfig(c *cli.Context) (*Config, error) {
 		mfaTokenCode = c.Args().First()
 	}
 	if mfaTokenCode == "" {
-		return nil, errors.New("awsmfa: --token-code or token arguments is required")
+		return nil, errors.New("--token-code or token arguments is required")
 	}
 
 	client := sts.New(session.Must(session.NewSessionWithOptions(session.Options{

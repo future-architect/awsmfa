@@ -11,8 +11,9 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name:  "awsmfa",
-		Usage: "Refresh AWS MFA",
+		Name:      "awsmfa",
+		Usage:     "Refresh AWS MFA",
+		UsageText: "awsmfa [global options] [token-code]",
 		Action: func(c *cli.Context) error {
 			config, err := awsmfa.NewConfig(c)
 			if err != nil {
