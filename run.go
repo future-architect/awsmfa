@@ -45,5 +45,9 @@ func Run(ctx context.Context, c *Config) error {
 		return err
 	}
 
+	if err := c.closeFunc(); err != nil {
+		return err
+	}
+
 	return nil
 }
