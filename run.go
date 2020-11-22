@@ -17,11 +17,11 @@ func Run(ctx context.Context, c *Config) error {
 		SerialNumber:    aws.String(c.serialNumber),
 		TokenCode:       aws.String(c.mfaTokenCode),
 	})
-	if !c.quiet {
-		log.Println(out)
-	}
 	if err != nil {
 		return err
+	}
+	if !c.quiet {
+		log.Println(out)
 	}
 
 	// Create mfa-profile section in config, if section not exists.

@@ -89,7 +89,7 @@ func TestRun(t *testing.T) {
 
 			err := Run(context.TODO(), tt.args.c)
 			if err != nil {
-				if !errors.As(err, &tt.wantErr) {
+				if tt.wantErr == nil || !errors.As(err, &tt.wantErr) {
 					t.Errorf("Run() error = %v, wantErr %v", err, tt.wantErr)
 				}
 				return
