@@ -2,7 +2,9 @@ package awsmfa
 
 import (
 	"context"
+	"errors"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -20,7 +22,7 @@ func TestRun(t *testing.T) {
 	tests := []struct {
 		name            string
 		args            args
-		wantErr         bool
+		wantErr         error
 		wantConfig      string
 		wantCredentials string
 	}{
@@ -36,7 +38,7 @@ func TestRun(t *testing.T) {
 					credentialsPath: filepath.Join("testdata", ".aws", "credentials"),
 				},
 			},
-			wantErr:         false,
+			wantErr:         nil,
 			wantConfig:      filepath.Join("testdata", "want", "config"),
 			wantCredentials: filepath.Join("testdata", "want", "credentials"),
 		},
@@ -52,9 +54,23 @@ func TestRun(t *testing.T) {
 					credentialsPath: filepath.Join("testdata", ".aws", "credentials_2"),
 				},
 			},
-			wantErr:         false,
+			wantErr:         nil,
 			wantConfig:      filepath.Join("testdata", "want", "config_2"),
 			wantCredentials: filepath.Join("testdata", "want", "credentials_2"),
+		},
+		{
+			name: "no config and credentials",
+			args: args{
+				c: &Config{
+					durationSeconds: 43200,
+					serialNumber:    "arn:aws:iam::123456789012:mfa/test",
+					mfaTokenCode:    "012345",
+					mfaProfileName:  "mfa",
+					configPath:      filepath.Join("testdata", ".aws", "config_not_found"),
+					credentialsPath: filepath.Join("testdata", ".aws", "credentials_not_found"),
+				},
+			},
+			wantErr: &os.PathError{},
 		},
 	}
 	for _, tt := range tests {
@@ -71,8 +87,12 @@ func TestRun(t *testing.T) {
 			tt.args.c.outConfigPath = filepath.Join(tmpDir, "config")
 			tt.args.c.outCredentialsPath = filepath.Join(tmpDir, "credentials")
 
-			if err := Run(context.TODO(), tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("Run() error = %v, wantErr %v", err, tt.wantErr)
+			err := Run(context.TODO(), tt.args.c)
+			if err != nil {
+				if !errors.As(err, &tt.wantErr) {
+					t.Errorf("Run() error = %v, wantErr %v", err, tt.wantErr)
+				}
+				return
 			}
 
 			compareFile(t, filepath.Join(tmpDir, "config"), tt.wantConfig)

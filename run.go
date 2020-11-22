@@ -24,7 +24,7 @@ func Run(ctx context.Context, c *Config) error {
 		return err
 	}
 
-	// Create mfa-profile section in config, if not exists.
+	// Create mfa-profile section in config, if section not exists.
 	config, err := ini.Load(c.configPath)
 	if err != nil {
 		return err
@@ -39,7 +39,7 @@ func Run(ctx context.Context, c *Config) error {
 	if err != nil {
 		return err
 	}
-	outConfigFile.Close()
+	_ = outConfigFile.Close()
 	if err := os.Rename(fmt.Sprintf("%s.tmp", c.outConfigPath), c.outConfigPath); err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func Run(ctx context.Context, c *Config) error {
 	if err != nil {
 		return err
 	}
-	outCredentialsFile.Close()
+	_ = outCredentialsFile.Close()
 	if err := os.Rename(fmt.Sprintf("%s.tmp", c.outCredentialsPath), c.outCredentialsPath); err != nil {
 		return err
 	}

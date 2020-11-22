@@ -7,7 +7,7 @@ awsmfa (AWS MFA Refresher)
 [actions]: https://github.com/d-tsuji/awsmfa/actions?workflow=test
 [license]: https://github.com/d-tsuji/awsmfa/blob/main/LICENSE
 
-`awsmfa` replaces config(`~/.aws/config`) and credentials(`~/.aws/credentials`) for MFA in AWS.
+`awsmfa` replaces the config(`~/.aws/config`) and credentials(`~/.aws/credentials`) for MFA in AWS.
 
 ## Usage
 
