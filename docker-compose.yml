@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  localstack:
+    image: localstack/localstack:0.12.3
+    environment:
+      SERVICES: sts
+      DEFAULT_REGION: ap-northeast-1
+      PORT_WEB_UI: 5050
+    ports:
+      - 5050:5050
+      - 4566:4566
