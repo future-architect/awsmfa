@@ -40,7 +40,7 @@ $ awsmfa [options] [token-code]
 	Device token codes issued by the MFA
 
 --quiet bool
-    if enabled, log is not printed in the console
+	if enabled, log is not printed in the console
 ```
 
 ### Example
