@@ -42,14 +42,6 @@ func main() {
 				Usage: "AWS serial-number",
 			},
 			&cli.StringFlag{
-				Name:  "account-id",
-				Usage: "AWS account id",
-			},
-			&cli.StringFlag{
-				Name:  "role",
-				Usage: "AWS role",
-			},
-			&cli.StringFlag{
 				Name:  "token-code",
 				Usage: "AWS MFA token",
 			},

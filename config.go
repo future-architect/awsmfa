@@ -2,7 +2,6 @@ package awsmfa
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -37,9 +36,7 @@ type Config struct {
 func NewConfig(c *cli.Context) (*Config, error) {
 	serialNumber := c.String("serial-number")
 	if serialNumber == "" {
-		accountID := c.String("account-id")
-		role := c.String("role")
-		serialNumber = fmt.Sprintf("arn:aws:iam::%s:mfa/%s", accountID, role)
+		return nil, errors.New("--serial-number is required")
 	}
 
 	mfaTokenCode := c.String("token-code")

@@ -28,19 +28,13 @@ $ awsmfa [options] [token-code]
 	Session expiration duration secounds (default `43200`)
 
 --serial-number string
-	AWS serial number. `--serial-number` or `--account-id` and `--role` are required
-
---account-id string
-	AWS account
-
---role string
-	AWS role
+	AWS serial number. `--serial-number` is required
 
 --token-code string
-	Device token codes issued by the MFA
+	Device token codes issued by the MFA. `--token-code` option or `token-code` is required
 
 --quiet bool
-	if enabled, log is not printed in the console
+	if enabled, log is not printed in the console. (default `false`)
 ```
 
 ### Example
