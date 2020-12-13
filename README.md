@@ -51,6 +51,12 @@ $ awsmfa --serial-number arn:aws:iam::123456789012:mfa/d-tsuji --profile my-prof
 
 ## Installation
 
+- From binary
+
+See https://github.com/d-tsuji/awsmfa/releases/latest
+
+- From source code
+
 ```
 # go get
 $ go get github.com/d-tsuji/awsmfa/cmd/awsmfa
