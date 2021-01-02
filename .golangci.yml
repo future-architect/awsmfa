@@ -15,3 +15,9 @@ linters:
 
 issues:
   exclude-use-default: false
+
+linters-settings:
+  govet:
+    enable-all: true
+    disable:
+      - shadow
