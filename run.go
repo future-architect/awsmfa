@@ -3,6 +3,7 @@ package awsmfa
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 
@@ -31,16 +32,16 @@ func Run(ctx context.Context, c *Config) error {
 	}
 	_ = config.Section(fmt.Sprintf("profile %s", c.mfaProfileName))
 
-	outConfigFile, err := os.Create(fmt.Sprintf("%s.tmp", c.outConfigPath))
+	tmpConfig, err := ioutil.TempFile(c.awsDir, "config.tmp.*")
 	if err != nil {
 		return err
 	}
-	_, err = config.WriteTo(outConfigFile)
+	_, err = config.WriteTo(tmpConfig)
 	if err != nil {
 		return err
 	}
-	_ = outConfigFile.Close()
-	if err := os.Rename(fmt.Sprintf("%s.tmp", c.outConfigPath), c.outConfigPath); err != nil {
+	_ = tmpConfig.Close()
+	if err := os.Rename(tmpConfig.Name(), c.outConfigPath); err != nil {
 		return err
 	}
 
@@ -55,16 +56,16 @@ func Run(ctx context.Context, c *Config) error {
 	section.Key("aws_secret_access_key").SetValue(aws.StringValue(out.Credentials.SecretAccessKey))
 	section.Key("aws_session_token").SetValue(aws.StringValue(out.Credentials.SessionToken))
 
-	outCredentialsFile, err := os.Create(fmt.Sprintf("%s.tmp", c.outCredentialsPath))
+	tmpCredentialsFile, err := ioutil.TempFile(c.awsDir, "credentials.tmp.*")
 	if err != nil {
 		return err
 	}
-	_, err = credential.WriteTo(outCredentialsFile)
+	_, err = credential.WriteTo(tmpCredentialsFile)
 	if err != nil {
 		return err
 	}
-	_ = outCredentialsFile.Close()
-	if err := os.Rename(fmt.Sprintf("%s.tmp", c.outCredentialsPath), c.outCredentialsPath); err != nil {
+	_ = tmpCredentialsFile.Close()
+	if err := os.Rename(tmpCredentialsFile.Name(), c.outCredentialsPath); err != nil {
 		return err
 	}
 
