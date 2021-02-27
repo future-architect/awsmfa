@@ -59,7 +59,7 @@ func TestRun(t *testing.T) {
 			wantCredentials: filepath.Join("testdata", "want", "credentials_2"),
 		},
 		{
-			name: "no config and credentials",
+			name: "no config",
 			args: args{
 				c: &Config{
 					durationSeconds: 43200,
@@ -67,6 +67,20 @@ func TestRun(t *testing.T) {
 					mfaTokenCode:    "012345",
 					mfaProfileName:  "mfa",
 					configPath:      filepath.Join("testdata", ".aws", "config_not_found"),
+					credentialsPath: filepath.Join("testdata", ".aws", "credentials"),
+				},
+			},
+			wantErr: &os.PathError{},
+		},
+		{
+			name: "no credentials",
+			args: args{
+				c: &Config{
+					durationSeconds: 43200,
+					serialNumber:    "arn:aws:iam::123456789012:mfa/test",
+					mfaTokenCode:    "012345",
+					mfaProfileName:  "mfa",
+					configPath:      filepath.Join("testdata", ".aws", "config"),
 					credentialsPath: filepath.Join("testdata", ".aws", "credentials_not_found"),
 				},
 			},
