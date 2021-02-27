@@ -2,10 +2,10 @@ awsmfa (AWS MFA Refresher)
 ==========================
 
 [![Test Status](https://github.com/d-tsuji/awsmfa/workflows/test/badge.svg?branch=master)][actions]
-[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
+[![Apache-2.0 license](https://img.shields.io/badge/license-Apache2.0-blue.svg)][license]
 
 [actions]: https://github.com/d-tsuji/awsmfa/actions?workflow=test
-[license]: https://github.com/d-tsuji/awsmfa/blob/main/LICENSE
+[license]: https://github.com/d-tsuji/awsmfa/blob/master/LICENSE
 
 `awsmfa` replaces the config(`~/.aws/config`) and credentials(`~/.aws/credentials`) for MFA in AWS.
 
