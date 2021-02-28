@@ -12,6 +12,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Config holds information about the configuration of awsmfa.
 type Config struct {
 	// sts client
 	client *sts.STS
@@ -34,6 +35,7 @@ type Config struct {
 	quiet bool
 }
 
+// NewConfig generates the Config.
 func NewConfig(c *cli.Context) (*Config, error) {
 	serialNumber := c.String("serial-number")
 	if serialNumber == "" {

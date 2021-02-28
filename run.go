@@ -12,6 +12,7 @@ import (
 	"gopkg.in/ini.v1"
 )
 
+// Run executes awsmfa.
 func Run(ctx context.Context, c *Config) error {
 	out, err := c.client.GetSessionTokenWithContext(ctx, &sts.GetSessionTokenInput{
 		DurationSeconds: aws.Int64(c.durationSeconds),
