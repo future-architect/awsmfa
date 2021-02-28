@@ -41,7 +41,77 @@ $ awsmfa [options] [token-code]
 
 ```
 $ awsmfa --serial-number arn:aws:iam::123456789012:mfa/d-tsuji --profile my-profile 123456
+2021/02/28 11:01:49 {
+  Credentials: {
+    AccessKeyId: "AKIAIOSFODNN7EXAMPLE",
+    Expiration: 2021-02-28 14:01:49.689 +0000 UTC,
+    SecretAccessKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYzEXAMPLEKEY",
+    SessionToken: "AQoEXAMPLEH4aoA...."
+  }
+}
 ```
+
+#### initial
+
+- `.aws/config`
+
+<table>
+<thead><tr><th>Before</th><th>After</th></tr></thead>
+<tbody>
+<tr><td valign="top">
+
+```ini
+[default]
+region = us-east-1
+output = json
+```
+
+</td><td valign="top">
+
+```ini
+[default]
+region = us-east-1
+output = json
+
+[profile mfa]
+
+```
+</td></tr>
+</tbody></table>
+
+- `.aws/credentials`
+
+<table>
+<thead><tr><th>Before</th><th>After</th></tr></thead>
+<tbody>
+<tr><td valign="top">
+
+```ini
+[default]
+aws_access_key_id = ABCDEFGHIJKLMNOPQRST
+aws_secret_access_key = ChcdJbC9kraRNW5iy8XgDyR4QNRT44kKRPmKEGQT
+```
+
+</td><td valign="top">
+
+```ini
+[default]
+aws_access_key_id     = ABCDEFGHIJKLMNOPQRST
+aws_secret_access_key = ChcdJbC9kraRNW5iy8XgDyR4QNRT44kKRPmKEGQT
+
+[mfa]
+aws_access_key_id     = AKIAIOSFODNN7EXAMPLE
+aws_secret_access_key = wJalrXUtnFEMI/K7MDENG/bPxRfiCYzEXAMPLEKEY
+aws_session_token     = AQoEXAMPLEH4aoA....
+
+```
+</td></tr>
+</tbody></table>
+
+
+#### next time
+
+Update `aws_access_key_id`, `aws_secret_access_key` and `aws_session_token` in the target section (default is `mfa`) of `.aws/credentials`.
 
 ## Installation
 
