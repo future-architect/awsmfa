@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/d-tsuji/awsmfa"
+	"github.com/future-architect/awsmfa"
 	"github.com/urfave/cli/v2"
 )
 

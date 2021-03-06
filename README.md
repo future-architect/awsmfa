@@ -1,11 +1,11 @@
 awsmfa (AWS MFA Refresher)
 ==========================
 
-[![Test Status](https://github.com/d-tsuji/awsmfa/workflows/test/badge.svg?branch=master)][actions]
+[![Test Status](https://github.com/future-architect/awsmfa/workflows/test/badge.svg?branch=master)][actions]
 [![Apache-2.0 license](https://img.shields.io/badge/license-Apache2.0-blue.svg)][license]
 
-[actions]: https://github.com/d-tsuji/awsmfa/actions?workflow=test
-[license]: https://github.com/d-tsuji/awsmfa/blob/master/LICENSE
+[actions]: https://github.com/future-architect/awsmfa/actions?workflow=test
+[license]: https://github.com/future-architect/awsmfa/blob/master/LICENSE
 
 `awsmfa` replaces the config(`~/.aws/config`) and credentials(`~/.aws/credentials`) for MFA in AWS.
 
@@ -40,7 +40,7 @@ $ awsmfa [options] [token-code]
 ### Example
 
 ```
-$ awsmfa --serial-number arn:aws:iam::123456789012:mfa/d-tsuji --profile my-profile 123456
+$ awsmfa --serial-number arn:aws:iam::123456789012:mfa/future-architect --profile my-profile 123456
 2021/02/28 11:01:49 {
   Credentials: {
     AccessKeyId: "AKIAIOSFODNN7EXAMPLE",
@@ -119,12 +119,12 @@ Update `aws_access_key_id`, `aws_secret_access_key` and `aws_session_token` in t
 
 ```
 # binary
-$ curl -sfL https://raw.githubusercontent.com/d-tsuji/awsmfa/master/install.sh | sudo sh -s -- -b /usr/local/bin
+$ curl -sfL https://raw.githubusercontent.com/future-architect/awsmfa/master/install.sh | sudo sh -s -- -b /usr/local/bin
 ```
 
 - From source code
 
 ```
 # go get
-$ go get github.com/d-tsuji/awsmfa/cmd/awsmfa
+$ go get github.com/future-architect/awsmfa/cmd/awsmfa
 ```
