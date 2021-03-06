@@ -42,12 +42,9 @@ func NewConfig(c *cli.Context) (*Config, error) {
 		return nil, errors.New("--serial-number is required")
 	}
 
-	mfaTokenCode := c.String("token-code")
+	mfaTokenCode := c.Args().First()
 	if mfaTokenCode == "" {
-		mfaTokenCode = c.Args().First()
-	}
-	if mfaTokenCode == "" {
-		return nil, errors.New("--token-code or token arguments is required")
+		return nil, errors.New("[token-code] arguments is required")
 	}
 
 	client := sts.New(session.Must(session.NewSessionWithOptions(session.Options{

@@ -41,10 +41,6 @@ func main() {
 				Name:  "serial-number",
 				Usage: "AWS serial-number",
 			},
-			&cli.StringFlag{
-				Name:  "token-code",
-				Usage: "AWS MFA token",
-			},
 			&cli.BoolFlag{
 				Name:  "quiet",
 				Usage: "log print disable",

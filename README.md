@@ -30,9 +30,6 @@ $ awsmfa [options] [token-code]
 --serial-number string
 	AWS serial number. `--serial-number` is required
 
---token-code string
-	Device token codes issued by the MFA. `--token-code` option or `token-code` is required
-
 --quiet bool
 	if enabled, log is not printed in the console. (default `false`)
 ```
