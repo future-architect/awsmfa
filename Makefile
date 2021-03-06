@@ -4,7 +4,7 @@ GOBIN ?= $(shell go env GOPATH)/bin
 GODOWNLOADER_VERSION := 0.1.0
 export GO111MODULE=on
 
-repo_name := d-tsuji/awsmfa
+repo_name := future-architect/awsmfa
 current_dir := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: all

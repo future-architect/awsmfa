@@ -1,4 +1,4 @@
-module github.com/d-tsuji/awsmfa
+module github.com/future-architect/awsmfa
 
 go 1.15
 

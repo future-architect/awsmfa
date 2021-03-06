@@ -34,5 +34,5 @@ archives:
 release:
   prerelease: auto
   github:
-    owner: d-tsuji
+    owner: future-architect
     name: awsmfa
