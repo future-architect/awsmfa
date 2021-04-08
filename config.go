@@ -54,22 +54,36 @@ func NewConfig(c *cli.Context) (*Config, error) {
 		},
 	})))
 
+	var (
+		configPath      string
+		credentialsPath string
+	)
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return nil, err
+	}
+	if v := os.Getenv("AWS_CONFIG_FILE"); v != "" {
+		configPath = v
+	} else {
+		configPath = filepath.Join(homeDir, ".aws", "config")
+	}
+	if v := os.Getenv("AWS_SHARED_CREDENTIALS_FILE"); v != "" {
+		credentialsPath = v
+	} else {
+		credentialsPath = filepath.Join(homeDir, ".aws", "credentials")
 	}
 
 	return &Config{
 		client:             client,
 		profile:            c.String("profile"),
 		mfaProfileName:     c.String("mfa-profile-name"),
-		configPath:         filepath.Join(homeDir, ".aws", "config"),
-		credentialsPath:    filepath.Join(homeDir, ".aws", "credentials"),
+		configPath:         configPath,
+		credentialsPath:    credentialsPath,
 		durationSeconds:    c.Int64("duration-seconds"),
 		serialNumber:       serialNumber,
 		mfaTokenCode:       mfaTokenCode,
-		outConfigPath:      filepath.Join(homeDir, ".aws", "config"),
-		outCredentialsPath: filepath.Join(homeDir, ".aws", "credentials"),
+		outConfigPath:      configPath,
+		outCredentialsPath: credentialsPath,
 		awsDir:             filepath.Join(homeDir, ".aws"),
 		quiet:              c.Bool("quiet"),
 	}, nil
