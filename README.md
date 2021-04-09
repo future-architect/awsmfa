@@ -7,13 +7,16 @@ awsmfa (AWS MFA Refresher)
 [actions]: https://github.com/future-architect/awsmfa/actions?workflow=test
 [license]: https://github.com/future-architect/awsmfa/blob/master/LICENSE
 
-`awsmfa` replaces the config(`~/.aws/config`) and credentials(`~/.aws/credentials`) for MFA in AWS.
+`awsmfa` replaces the config and credentials for MFA in AWS.
 
 ## Usage
 
 ```console
 $ awsmfa [options] [token-code]
 ```
+
+- The config file uses `~/.aws/config` by default. You can override it with the environment variable `AWS_CONFIG_FILE`.
+- The credentials file uses `~/.aws/credentials` by default. You can override it with the environment variable `AWS_SHARED_CREDENTIALS_FILE`.
 
 ### Options
 
