@@ -8,11 +8,10 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/google/go-cmp/cmp"
-
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/sts"
 )
 
 func TestRun(t *testing.T) {
@@ -89,19 +88,23 @@ func TestRun(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tt.args.c.client = sts.New(session.Must(session.NewSessionWithOptions(session.Options{
-				Profile: tt.args.c.profile,
-				Config: aws.Config{
-					Region:   aws.String("ap-northeast-1"),
-					Endpoint: aws.String("http://localhost:4566"),
-				},
-			})))
+			cfg, err := config.LoadDefaultConfig(context.TODO(),
+				config.WithRegion("ap-northeast-1"),
+				config.WithEndpointResolverWithOptions(aws.EndpointResolverWithOptionsFunc(
+					func(service, region string, options ...interface{}) (aws.Endpoint, error) {
+						return aws.Endpoint{URL: "http://localhost:4566"}, nil
+					})),
+			)
+			if err != nil {
+				t.Fatal(err)
+			}
+			tt.args.c.client = sts.NewFromConfig(cfg)
 
 			tmpDir := t.TempDir()
 			tt.args.c.outConfigPath = filepath.Join(tmpDir, "config")
 			tt.args.c.outCredentialsPath = filepath.Join(tmpDir, "credentials")
 
-			err := Run(context.TODO(), tt.args.c)
+			err = Run(context.TODO(), tt.args.c)
 			if err != nil {
 				if tt.wantErr == nil || !errors.As(err, &tt.wantErr) {
 					t.Errorf("Run() error = %v, wantErr %v", err, tt.wantErr)

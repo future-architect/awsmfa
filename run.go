@@ -7,15 +7,15 @@ import (
 	"log"
 	"os"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/sts"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"gopkg.in/ini.v1"
 )
 
 // Run executes awsmfa.
 func Run(ctx context.Context, c *Config) error {
-	out, err := c.client.GetSessionTokenWithContext(ctx, &sts.GetSessionTokenInput{
-		DurationSeconds: aws.Int64(c.durationSeconds),
+	out, err := c.client.GetSessionToken(ctx, &sts.GetSessionTokenInput{
+		DurationSeconds: aws.Int32(c.durationSeconds),
 		SerialNumber:    aws.String(c.serialNumber),
 		TokenCode:       aws.String(c.mfaTokenCode),
 	})
@@ -23,7 +23,7 @@ func Run(ctx context.Context, c *Config) error {
 		return err
 	}
 	if !c.quiet {
-		log.Println(out)
+		log.Printf("Wrote session token for profile %s, expiration: %s\n", c.mfaProfileName, *out.Credentials.Expiration)
 	}
 
 	// Create mfa-profile section in config, if section not exists.
@@ -53,9 +53,9 @@ func Run(ctx context.Context, c *Config) error {
 	}
 	section := credential.Section(c.mfaProfileName)
 
-	section.Key("aws_access_key_id").SetValue(aws.StringValue(out.Credentials.AccessKeyId))
-	section.Key("aws_secret_access_key").SetValue(aws.StringValue(out.Credentials.SecretAccessKey))
-	section.Key("aws_session_token").SetValue(aws.StringValue(out.Credentials.SessionToken))
+	section.Key("aws_access_key_id").SetValue(aws.ToString(out.Credentials.AccessKeyId))
+	section.Key("aws_secret_access_key").SetValue(aws.ToString(out.Credentials.SecretAccessKey))
+	section.Key("aws_session_token").SetValue(aws.ToString(out.Credentials.SessionToken))
 
 	tmpCredentialsFile, err := ioutil.TempFile(c.awsDir, "credentials.tmp.*")
 	if err != nil {
