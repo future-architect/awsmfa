@@ -111,13 +111,17 @@ Update `aws_access_key_id`, `aws_secret_access_key` and `aws_session_token` in t
 - From binary
 
 ```
-# binary
-$ curl -sfL https://raw.githubusercontent.com/future-architect/awsmfa/master/install.sh | sudo sh -s -- -b /usr/local/bin
+# Install the latest version. (Install it into ./bin/ by default).
+$ curl -sfL https://raw.githubusercontent.com/future-architect/awsmfa/master/install.sh | sh -s
+
+# Specify installation directory ($(go env GOPATH)/bin/) and version.
+$ curl -sfL https://raw.githubusercontent.com/future-architect/awsmfa/master/install.sh | sh -s -- -b $(go env GOPATH)/bin [vX.Y.Z]
 ```
+
+On Windows, you can run the above commands with Git Bash, which comes with [Git for Windows](https://git-scm.com/download/win).
 
 - From source code
 
 ```
-# go get
-$ go get github.com/future-architect/awsmfa/cmd/awsmfa
+$ go install github.com/future-architect/awsmfa/cmd/awsmfa@latest
 ```
