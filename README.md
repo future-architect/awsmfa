@@ -41,14 +41,7 @@ $ awsmfa [options] [token-code]
 
 ```
 $ awsmfa --serial-number arn:aws:iam::123456789012:mfa/future-architect --profile my-profile 123456
-2021/02/28 11:01:49 {
-  Credentials: {
-    AccessKeyId: "AKIAIOSFODNN7EXAMPLE",
-    Expiration: 2021-02-28 14:01:49.689 +0000 UTC,
-    SecretAccessKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYzEXAMPLEKEY",
-    SessionToken: "AQoEXAMPLEH4aoA...."
-  }
-}
+2021/02/28 11:01:49 Wrote session token for profile mfa, expiration: 2021-02-28 14:01:49.689 +0000 UTC
 ```
 
 #### initial
