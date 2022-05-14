@@ -5,24 +5,22 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/sts"
-
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/urfave/cli/v2"
 )
 
 // Config holds information about the configuration of awsmfa.
 type Config struct {
 	// sts client
-	client *sts.STS
+	client *sts.Client
 
 	// sts config
 	profile         string
 	mfaProfileName  string
 	configPath      string
 	credentialsPath string
-	durationSeconds int64
+	durationSeconds int32
 	serialNumber    string
 	mfaTokenCode    string
 
@@ -47,12 +45,14 @@ func NewConfig(c *cli.Context) (*Config, error) {
 		return nil, errors.New("[token-code] arguments is required")
 	}
 
-	client := sts.New(session.Must(session.NewSessionWithOptions(session.Options{
-		Profile: c.String("profile"),
-		Config: aws.Config{
-			Region: aws.String(os.Getenv("AWS_REGION")),
-		},
-	})))
+	cfg, err := config.LoadDefaultConfig(c.Context,
+		config.WithSharedConfigProfile(c.String("profile")),
+		config.WithRegion(os.Getenv("AWS_REGION")),
+	)
+	if err != nil {
+		return nil, err
+	}
+	client := sts.NewFromConfig(cfg)
 
 	var (
 		configPath      string
@@ -79,7 +79,7 @@ func NewConfig(c *cli.Context) (*Config, error) {
 		mfaProfileName:     c.String("mfa-profile-name"),
 		configPath:         configPath,
 		credentialsPath:    credentialsPath,
-		durationSeconds:    c.Int64("duration-seconds"),
+		durationSeconds:    int32(c.Int("duration-seconds")),
 		serialNumber:       serialNumber,
 		mfaTokenCode:       mfaTokenCode,
 		outConfigPath:      configPath,
